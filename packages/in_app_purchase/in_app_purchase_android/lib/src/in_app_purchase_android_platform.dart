@@ -164,10 +164,12 @@ class InAppPurchaseAndroidPlatform extends InAppPurchasePlatform {
   Future<bool> buyNonConsumable({required PurchaseParam purchaseParam}) async {
     ChangeSubscriptionParam? changeSubscriptionParam;
     String? offerToken;
+    String? obfuscatedProfileId;
 
     if (purchaseParam is GooglePlayPurchaseParam) {
       changeSubscriptionParam = purchaseParam.changeSubscriptionParam;
       offerToken = purchaseParam.offerToken;
+      obfuscatedProfileId = purchaseParam.obfuscatedProfileId;
     }
 
     if (offerToken == null &&
@@ -182,6 +184,7 @@ class InAppPurchaseAndroidPlatform extends InAppPurchasePlatform {
             product: purchaseParam.productDetails.id,
             offerToken: offerToken,
             accountId: purchaseParam.applicationUserName,
+            obfuscatedProfileId: obfuscatedProfileId,
             oldProduct: changeSubscriptionParam?.oldPurchaseDetails.productID,
             purchaseToken: changeSubscriptionParam
                 ?.oldPurchaseDetails

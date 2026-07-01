@@ -383,6 +383,13 @@ void main() {
         final bool launchResult = await iapAndroidPlatform.buyNonConsumable(
           purchaseParam: purchaseParam,
         );
+        final VerificationResult verification = verify(
+          mockApi.launchBillingFlow(captureAny),
+        );
+        final params =
+            verification.captured.single as PlatformBillingFlowParams;
+        expect(params.accountId, equals(accountId));
+        expect(params.obfuscatedProfileId, isNull);
 
         final PurchaseDetails result = await completer.future;
         expect(launchResult, isTrue);
@@ -395,6 +402,7 @@ void main() {
     test('buy non consumable, serializes and deserializes data', () async {
       const ProductDetailsWrapper productDetails = dummyOneTimeProductDetails;
       const accountId = 'hashedAccountId';
+      const profileId = 'hashedProfileId';
       const debugMessage = 'dummy message';
       const BillingResponse sentCode = BillingResponse.ok;
       const expectedBillingResult = BillingResultWrapper(
@@ -444,10 +452,17 @@ void main() {
           productDetails,
         ).first,
         applicationUserName: accountId,
+        obfuscatedProfileId: profileId,
       );
       final bool launchResult = await iapAndroidPlatform.buyNonConsumable(
         purchaseParam: purchaseParam,
       );
+      final VerificationResult verification = verify(
+        mockApi.launchBillingFlow(captureAny),
+      );
+      final params = verification.captured.single as PlatformBillingFlowParams;
+      expect(params.accountId, equals(accountId));
+      expect(params.obfuscatedProfileId, equals(profileId));
 
       final PurchaseDetails result = await completer.future;
       expect(launchResult, isTrue);

@@ -1,3 +1,8 @@
+## 0.4.0+10.profileid.1
+
+* Adds support for passing `obfuscatedProfileId` through
+  `GooglePlayPurchaseParam`.
+
 ## 0.4.0+10
 
 * Fixes dartdoc comments that accidentally used HTML.
